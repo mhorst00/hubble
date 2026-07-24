@@ -27,7 +27,7 @@ static void fake_eeprom_init(void)
     sid.baudrate = 0x67;   /* 103 * 100 MBd = 10.3 Gbd */
     sid.rate = 0;
     sid.length_copper = 1; /* 1 m */
-    pad_copy(sid.vendor_name, "SWABIAN", sizeof(sid.vendor_name));
+    pad_copy(sid.vendor_name, "GENERIC", sizeof(sid.vendor_name));
     pad_copy(sid.vendor_pn, "TEST-DAC10G", sizeof(sid.vendor_pn));
     pad_copy((char *)sid.vendor_rev, "A1", sizeof(sid.vendor_rev));
     pad_copy(sid.vendor_sn, "SIM0000000000001", sizeof(sid.vendor_sn));

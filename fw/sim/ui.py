@@ -16,11 +16,11 @@ fbuf = b""
 class Handler :
 	def __init__(self, display) :
 		self.display = display
-	
+
 	def display_draw(self, widget, cr) :
 		width = widget.get_allocation().width
 		height = widget.get_allocation().height
-		
+
 		cr.set_source_rgb(0,0,0)
 		cr.paint()
 		border = 10
@@ -42,26 +42,26 @@ class Handler :
 		#
 		#print("draw")
 		#self.display.draw(widget, cr)
-		
+
 	def button_mode_clicked(self, widget) :
 		pass
-	
+
 	def button_light_clicked(self, widget) :
 		print("light")
-		
+
 	def button_mode(self, widget) :
 		sock.send(b"m")
-		
+
 	def button_select(self, widget) :
 		sock.send(b"s")
 
 	def button_up(self, widget) :
 		sock.send(b"u")
-	
+
 	def button_down(self, widget) :
 		sock.send(b"d")
-	
-	
+
+
 	def quit(self, widget) :
 		Gtk.main_quit()
 
@@ -90,8 +90,8 @@ def zmq_callback(queue, condition):
 		fbuf = rx
 		screen.queue_draw()
 		print("rx")
-	
-		
+
+
 	return True
 
 GLib.io_add_watch(sock.getsockopt(zmq.FD), GLib.IO_IN|GLib.IO_ERR|GLib.IO_HUP	, zmq_callback)

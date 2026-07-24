@@ -95,7 +95,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
+
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -170,7 +170,7 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
-  
+
   /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
@@ -193,7 +193,7 @@ void SystemClock_Config(void)
 
   if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_4)
   {
-  Error_Handler();  
+  Error_Handler();
   }
   LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
   LL_RCC_HSI_Enable();
@@ -201,7 +201,7 @@ void SystemClock_Config(void)
    /* Wait till HSI is ready */
   while(LL_RCC_HSI_IsReady() != 1)
   {
-    
+
   }
   LL_RCC_HSI_SetCalibTrimming(64);
   LL_RCC_HSI48_Enable();
@@ -209,7 +209,7 @@ void SystemClock_Config(void)
    /* Wait till HSI48 is ready */
   while(LL_RCC_HSI48_IsReady() != 1)
   {
-    
+
   }
   LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_1, 10, LL_RCC_PLLR_DIV_2);
   LL_RCC_PLL_EnableDomain_SYS();
@@ -218,14 +218,14 @@ void SystemClock_Config(void)
    /* Wait till PLL is ready */
   while(LL_RCC_PLL_IsReady() != 1)
   {
-    
+
   }
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
    /* Wait till System clock is ready */
   while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
   {
-  
+
   }
   LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
@@ -263,7 +263,7 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 1 */
 
   /* USER CODE END ADC1_Init 1 */
-  /** Common config 
+  /** Common config
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV16;
@@ -284,14 +284,14 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure the ADC multi-mode 
+  /** Configure the ADC multi-mode
   */
   multimode.Mode = ADC_MODE_INDEPENDENT;
   if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure Regular Channel 
+  /** Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_8;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -368,13 +368,13 @@ static void MX_I2C1_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Analogue filter 
+  /** Configure Analogue filter
   */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure Digital filter 
+  /** Configure Digital filter
   */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
   {
@@ -414,13 +414,13 @@ static void MX_I2C2_Init(void)
   {
     Error_Handler();
   }
-  /** Configure Analogue filter 
+  /** Configure Analogue filter
   */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
-  /** Configure Digital filter 
+  /** Configure Digital filter
   */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
   {
@@ -566,7 +566,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, OLED_CD_Pin|OLED_RESET_Pin|LEN_VBAT_MEAS_Pin|P12V_OLED_HEN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SFP_TX_DIS_Pin|SFP_RS0_Pin|RET_PWR_HEN_Pin|SFP_PWR_HEN_Pin 
+  HAL_GPIO_WritePin(GPIOB, SFP_TX_DIS_Pin|SFP_RS0_Pin|RET_PWR_HEN_Pin|SFP_PWR_HEN_Pin
                           |CHG_ISET_Pin|SFP_RS1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : BTN_MODE_Pin */
@@ -606,9 +606,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SFP_TX_DIS_Pin SFP_RS0_Pin RET_PWR_HEN_Pin SFP_PWR_HEN_Pin 
+  /*Configure GPIO pins : SFP_TX_DIS_Pin SFP_RS0_Pin RET_PWR_HEN_Pin SFP_PWR_HEN_Pin
                            CHG_ISET_Pin SFP_RS1_Pin */
-  GPIO_InitStruct.Pin = SFP_TX_DIS_Pin|SFP_RS0_Pin|RET_PWR_HEN_Pin|SFP_PWR_HEN_Pin 
+  GPIO_InitStruct.Pin = SFP_TX_DIS_Pin|SFP_RS0_Pin|RET_PWR_HEN_Pin|SFP_PWR_HEN_Pin
                           |CHG_ISET_Pin|SFP_RS1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -711,29 +711,29 @@ void StartDefaultTask(void *argument)
   send_event(EVENT_NONE, 0);
     /* Infinite loop */
     for (;;) {
-    	event_t ev;
-    	xQueueReceive(event_queue, &ev, portMAX_DELAY);
-    	if(ev.type == EVENT_BUTTON && ev.param == (EVENT_BUTTON_MODE | EVENT_BUTTON_LONG)) {
-    		send_event(EVENT_POWER_OFF, 0);
-    	}
-    	else if(ev.type == EVENT_POWER_OFF) {
-    		dpy_clear();
-    		dpy_set_font(DPY_FONT_32_BOLD);
-    		dpy_puts(8, 16, "bye bye");
-    		dpy_trg_flush();
-    		persist_save();
-    		vTaskDelay(100);
-    		sfp_trg_enter_sleep();
-    		HAL_I2C_DeInit(&hi2c1);
-    		HAL_I2C_DeInit(&hi2c2);
-    		USBD_DeInit(&hUsbDeviceFS);
-    		dpy_trg_enter_sleep();
-    		led_set_state(0);
-    		os_enter_sleep();
-    		debounce_enter_sleep();
-    		wakeup_from_button = 0;
-    		wakeup_from_charger = 0;
-    		while(1) {
+	event_t ev;
+	xQueueReceive(event_queue, &ev, portMAX_DELAY);
+	if(ev.type == EVENT_BUTTON && ev.param == (EVENT_BUTTON_MODE | EVENT_BUTTON_LONG)) {
+		send_event(EVENT_POWER_OFF, 0);
+	}
+	else if(ev.type == EVENT_POWER_OFF) {
+		dpy_clear();
+		dpy_set_font(DPY_FONT_32_BOLD);
+		dpy_puts(8, 16, "bye bye");
+		dpy_trg_flush();
+		persist_save();
+		vTaskDelay(100);
+		sfp_trg_enter_sleep();
+		HAL_I2C_DeInit(&hi2c1);
+		HAL_I2C_DeInit(&hi2c2);
+		USBD_DeInit(&hUsbDeviceFS);
+		dpy_trg_enter_sleep();
+		led_set_state(0);
+		os_enter_sleep();
+		debounce_enter_sleep();
+		wakeup_from_button = 0;
+		wakeup_from_charger = 0;
+		while(1) {
 				TIM1->CR1 &= ~TIM_CR1_CEN;
 				SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 				HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
@@ -777,47 +777,47 @@ void StartDefaultTask(void *argument)
 					break;
 				}
 				wakeup_from_button = 0;
-    		}
+		}
 
-    		dpy_clear();
-    		dpy_trg_flush();
-    		MX_I2C1_Init();
-    		MX_I2C2_Init();
-    		MX_USB_DEVICE_Init();
-    		dpy_trg_exit_sleep();
-    		sfp_trg_exit_sleep();
-    		os_exit_sleep();
-    		debounce_exit_sleep();
-    		if(wakeup_from_charger) {
-    			auto_off_set_charge_mode();
+		dpy_clear();
+		dpy_trg_flush();
+		MX_I2C1_Init();
+		MX_I2C2_Init();
+		MX_USB_DEVICE_Init();
+		dpy_trg_exit_sleep();
+		sfp_trg_exit_sleep();
+		os_exit_sleep();
+		debounce_exit_sleep();
+		if(wakeup_from_charger) {
+			auto_off_set_charge_mode();
 				wakeup_from_charger = 0;
-    		}
-    	}
-    	else if(ev.type == EVENT_BUTTON && ev.param == (EVENT_BUTTON_SELECT| EVENT_BUTTON_LONG)) {
-    		if(HAL_GPIO_ReadPin(BTN_UP_GPIO_Port, BTN_UP_Pin) == 0)
-    			NVIC_SystemReset();
-    	}
+		}
+	}
+	else if(ev.type == EVENT_BUTTON && ev.param == (EVENT_BUTTON_SELECT| EVENT_BUTTON_LONG)) {
+		if(HAL_GPIO_ReadPin(BTN_UP_GPIO_Port, BTN_UP_Pin) == 0)
+			NVIC_SystemReset();
+	}
 
-    	if(auto_off_get_charge_mode()) {
-    		dpy_clear();
-    		dpy_set_font(DPY_FONT_24_BOLD);
-    		uint8_t state = bat_hw_get_state();
-    		if(state&BAT_STATE_PG) {
-    			dpy_puts(4, 16, "plugged in");
-    		}
-    		else {
-    			dpy_puts(10, 16, "unplugged");
-    		}
-    	}
-    	else {
-    		view_handle_event(&ev);
-    	}
-    	dpy_trg_flush();
-    	auto_off_handle_event(&ev);
+	if(auto_off_get_charge_mode()) {
+		dpy_clear();
+		dpy_set_font(DPY_FONT_24_BOLD);
+		uint8_t state = bat_hw_get_state();
+		if(state&BAT_STATE_PG) {
+			dpy_puts(4, 16, "plugged in");
+		}
+		else {
+			dpy_puts(10, 16, "unplugged");
+		}
+	}
+	else {
+		view_handle_event(&ev);
+	}
+	dpy_trg_flush();
+	auto_off_handle_event(&ev);
 
         osDelay(1);
     }
-  /* USER CODE END 5 */ 
+  /* USER CODE END 5 */
 }
 
 /**
@@ -862,7 +862,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(char *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
     /* User can add his own implementation to report the file name and line number,
        tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */

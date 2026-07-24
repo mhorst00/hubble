@@ -6,11 +6,14 @@
 #include "common/util.h"
 #include <stddef.h>
 
-/* Reclassifies a 10G passive DAC as a 25G-capable module by rewriting a few
- * SFF-8472 identification bytes and their page checksums, per the well-known
- * "unlock25" EEPROM trick. Not all cables are electrically capable of 25G,
- * and the rewrite is not guaranteed reversible on every vendor's module, so
- * this requires an explicit arm (SELECT) + confirm (long-press SELECT).
+/* Reclassifies a 10G passive DAC as a 25G-capable module (or back again) by
+ * rewriting a few SFF-8472 identification bytes and their page checksums,
+ * per the well-known "unlock25" EEPROM trick. Direction is auto-detected
+ * from the module's current rate byte. Not all cables are electrically
+ * capable of 25G, and reverting restores standard 10G defaults rather than
+ * this specific cable's original bytes (Hubble doesn't persist a backup
+ * across sessions), so this requires an explicit arm (SELECT) + confirm
+ * (long-press SELECT).
  *
  * The five target bytes are written one at a time (the interface has no
  * transactional multi-byte write), stopping at the first failure. Whatever
@@ -19,6 +22,20 @@
  * matches neither the old nor the new identity. The revert writes go over
  * the same bus and can fail too, so there are three possible outcomes, not
  * two. */
+
+typedef struct {
+    uint8_t baudrate;
+    uint8_t transceiver2;
+    uint8_t upper_bit_rate_margin;
+} rate_profile_t;
+
+static const rate_profile_t PROFILE_25G = {0xff, 0x0d, 0x68};
+static const rate_profile_t PROFILE_10G = {0x67, 0x00, 0x00};
+
+static uint8_t is_25g(const sfp_sid_t *sid)
+{
+    return sid->baudrate == 0xff;
+}
 
 typedef enum {
     RESULT_NONE,
@@ -51,10 +68,12 @@ static write_result_t do_rewrite(void)
     }
 
     sfp_sid_t orig = *sfp_sid_get();
+    const rate_profile_t *target = is_25g(&orig) ? &PROFILE_10G : &PROFILE_25G;
+
     sfp_sid_t sid = orig;
-    sid.baudrate = 0xff;               /* 0x0C: see extended rate below */
-    sid.transceiver2 = 0x0d;           /* 0x24: 25G Base-CR CA-N */
-    sid.upper_bit_rate_margin = 0x68;  /* 0x42: 104 * 250 MBd = 26 Gbps */
+    sid.baudrate = target->baudrate;
+    sid.transceiver2 = target->transceiver2;
+    sid.upper_bit_rate_margin = target->upper_bit_rate_margin;
     sid.cc_base = sfp_cc_base_compute(&sid);
     sid.cc_ext = sfp_cc_ext_compute(&sid);
 
@@ -123,22 +142,23 @@ void view_25g_main(const event_t *event)
         }
     }
 
-    uint8_t rate = sfp_sid_get()->baudrate;
+    const sfp_sid_t *sid = sfp_sid_get();
+    uint8_t currently_25g = is_25g(sid);
     dpy_puts(0, 8, "Rate byte 0x0C:");
-    dpy_putix(90, 8, 2, rate);
-    dpy_puts(0, 16, rate == 0xff ? "already 25G-class" : "10G-class DAC");
+    dpy_putix(90, 8, 2, sid->baudrate);
+    dpy_puts(0, 16, currently_25g ? "25G-class" : "10G-class DAC");
 
     if (!armed) {
-        dpy_puts(0, 32, "SELECT: arm rewrite");
+        dpy_puts(0, 32, currently_25g ? "SELECT: arm to 10G" : "SELECT: arm to 25G");
     }
     else {
-        dpy_puts(0, 32, "LONG SELECT = write!");
+        dpy_puts(0, 32, currently_25g ? "LONG SEL = to 10G!" : "LONG SEL = to 25G!");
         dpy_puts(0, 40, "success = permanent");
         dpy_puts(0, 48, "other button: cancel");
     }
 
     if (result == RESULT_OK) {
-        dpy_puts(0, 56, "OK - now 25G");
+        dpy_puts(0, 56, currently_25g ? "OK - now 25G" : "OK - now 10G");
     }
     else if (result == RESULT_REVERTED) {
         dpy_puts(0, 56, "failed, reverted OK");

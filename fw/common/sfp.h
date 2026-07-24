@@ -133,6 +133,9 @@ sfp_sid_t  *sfp_sid_get(void);
 sfp_alarm_cal_t  *sfp_alarm_cal_get(void);
 sfp_mon_t  *sfp_mon_get(void);
 
+uint8_t sfp_cc_base_compute(const sfp_sid_t *sid);
+uint8_t sfp_cc_ext_compute(const sfp_sid_t *sid);
+
 typedef struct {
 	uint8_t addrs[6];
 } sfp_i2c_scan_t;

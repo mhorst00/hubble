@@ -2,6 +2,7 @@
 #include "os.h"
 #include "common/event.h"
 #include "common/bat_hw.h"
+#include "stm32l4xx_it.h"
 
 static ADC_HandleTypeDef *hadc;
 

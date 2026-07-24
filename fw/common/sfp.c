@@ -1,6 +1,7 @@
 #include "sfp.h"
 #include "util.h"
 #include <math.h>
+#include <stddef.h>
 #include <string.h>
 
 static uint32_t sfp_state = SFP_STATE_NOT_PRESENT;
@@ -94,7 +95,7 @@ logarithmf (float x,
     }
   else if (!isfinite(x))
     {
-      if (isnanf(x))
+      if (isnan(x))
         return NAN;
       else
         return INFINITY;
@@ -131,6 +132,26 @@ int16_t sfp_uw_to_dBm(uint16_t uw) //0.1uW
 	if(uw == 0)
 		return -990;
     return roundf(100.f * logarithmf(uw, 10) - 400.f);
+}
+
+uint8_t sfp_cc_base_compute(const sfp_sid_t *sid)
+{
+    const uint8_t *p = (const uint8_t *)sid;
+    uint8_t sum = 0;
+    for (size_t i = 0; i < offsetof(sfp_sid_t, cc_base); i++) {
+        sum += p[i];
+    }
+    return sum;
+}
+
+uint8_t sfp_cc_ext_compute(const sfp_sid_t *sid)
+{
+    const uint8_t *p = (const uint8_t *)sid;
+    uint8_t sum = 0;
+    for (size_t i = offsetof(sfp_sid_t, cc_base) + 1; i < offsetof(sfp_sid_t, cc_ext); i++) {
+        sum += p[i];
+    }
+    return sum;
 }
 
 static uint8_t sfp_model = SFP_MODEL_GENERIC;

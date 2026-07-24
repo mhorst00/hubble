@@ -69,6 +69,23 @@ uint8_t sfp_hw_read(uint8_t i2c_addr, uint8_t mem_addr, uint8_t len, void *dest)
     }
 }
 
+uint8_t sfp_hw_write(uint8_t i2c_addr, uint8_t mem_addr, uint8_t len, const void *src)
+{
+    HAL_StatusTypeDef r = HAL_I2C_Mem_Write(hi2c, i2c_addr, mem_addr, 1, (void *)src, len, 1000);
+    if (r == HAL_ERROR) {
+        return SFP_READ_ERR;
+    }
+    else if (r == HAL_TIMEOUT) {
+        return SFP_READ_TIMEOUT;
+    }
+    else if (r == HAL_BUSY) {
+        return SFP_READ_ERR;
+    }
+    else {
+        return SFP_READ_OK;
+    }
+}
+
 static void swap2(void *p)
 {
     uint8_t *p8 = p;

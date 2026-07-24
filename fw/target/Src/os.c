@@ -2,6 +2,7 @@
 #include "sfp_trg.h"
 #include "bat_trg.h"
 #include "main.h"
+#include "dpy_trg.h"
 #include "common/event.h"
 #include "common/util.h"
 #include "common/sfp.h"

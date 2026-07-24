@@ -14,6 +14,7 @@ typedef enum {
 } sfp_read_result_t;
 
 uint8_t sfp_hw_read(uint8_t i2c_addr, uint8_t mem_addr, uint8_t len, void *dest);
+uint8_t sfp_hw_write(uint8_t i2c_addr, uint8_t mem_addr, uint8_t len, const void *src);
 void sfp_hw_set_tx_dis(uint8_t dis);
 uint8_t sfp_hw_get_tx_dis(void);
 void sfp_hw_set_auto_on(uint8_t v);

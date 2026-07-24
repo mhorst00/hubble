@@ -7,6 +7,7 @@ void view_set_main(const event_t *event);
 void view_i2c_main(const event_t *event);
 void view_phy_main(const event_t *event);
 void view_eye_main(const event_t *event);
+void view_25g_main(const event_t *event);
 
 
 static const view_t view_id = {
@@ -37,6 +38,10 @@ static const view_t view_eye = {
     .main = view_eye_main
 };
 
+static const view_t view_25g = {
+    .main = view_25g_main
+};
+
 const view_t *the_views[] = {
     &view_id,
 	&view_pwr,
@@ -45,6 +50,7 @@ const view_t *the_views[] = {
 	&view_led,
 	&view_set,
 	&view_i2c,
+	&view_25g,
 };
 
 const uint8_t the_n_views = ARRAY_SIZE(the_views);

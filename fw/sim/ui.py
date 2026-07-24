@@ -54,7 +54,7 @@ class Handler :
 		
 	def button_select(self, widget) :
 		sock.send(b"s")
-		
+
 	def button_up(self, widget) :
 		sock.send(b"u")
 	
@@ -64,7 +64,17 @@ class Handler :
 	
 	def quit(self, widget) :
 		Gtk.main_quit()
-builder.connect_signals(Handler(0))	
+
+	# Shift+S sends a "long select" press (no physical long-press button in
+	# this UI) -- used to arm/confirm actions like the 25G EEPROM rewrite.
+	def key_press(self, widget, event) :
+		name = Gdk.keyval_name(event.keyval)
+		if name == "S" :
+			sock.send(b"S")
+
+handler = Handler(0)
+builder.connect_signals(handler)
+window.connect("key-press-event", handler.key_press)
 
 ctx = zmq.Context()
 

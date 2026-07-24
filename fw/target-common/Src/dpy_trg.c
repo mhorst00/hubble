@@ -1,6 +1,7 @@
 #include "dpy_trg.h"
 #include "common/dpy.h"
 #include "common/led_hw.h"
+#include "os.h"
 
 static SPI_HandleTypeDef *hspi = 0;
 

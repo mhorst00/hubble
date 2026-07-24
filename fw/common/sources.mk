@@ -8,6 +8,7 @@ SRC += ../common/dpy.c \
        ../common/views/view_led.c \
        ../common/views/view_set.c \
        ../common/views/view_i2c.c \
+       ../common/views/view_25g.c \
        ../common/views/view_phy.c \
        ../common/views/view_pwr.c \
        ../common/views/view_eye.c \
